@@ -1,6 +1,5 @@
 // script.js
 
-// Ensure the DOM is loaded before accessing elements
 window.addEventListener('DOMContentLoaded', () => {
   let score = 0;
   let clickPower = 1;
@@ -11,10 +10,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const clickBtn = document.getElementById('click-button');
   const upgradeBtn = document.getElementById('upgrade-clicker');
   const buySystemBtn = document.getElementById('buy-system');
+  const resetBtn = document.getElementById('reset-button');
   const timerEl = document.getElementById('timer');
 
   function updateScore() {
     scoreEl.textContent = `Water Units: ${score}`;
+    // Score pulse animation
+    scoreEl.classList.add('pulse');
+    scoreEl.addEventListener('animationend', () => {
+      scoreEl.classList.remove('pulse');
+    }, { once: true });
   }
 
   function updateCosts() {
@@ -25,9 +30,12 @@ window.addEventListener('DOMContentLoaded', () => {
   clickBtn.addEventListener('click', () => {
     score += clickPower;
     updateScore();
-    // visual feedback
-    clickBtn.style.backgroundColor = 'var(--color-dark-green)';
-    setTimeout(() => clickBtn.style.backgroundColor = 'var(--color-blue)', 100);
+
+    // Button pop animation
+    clickBtn.classList.add('pop');
+    clickBtn.addEventListener('animationend', () => {
+      clickBtn.classList.remove('pop');
+    }, { once: true });
   });
 
   upgradeBtn.addEventListener('click', () => {
@@ -37,6 +45,12 @@ window.addEventListener('DOMContentLoaded', () => {
       clickPower += 1;
       updateScore();
       updateCosts();
+
+      // Button pop animation
+      upgradeBtn.classList.add('pop');
+      upgradeBtn.addEventListener('animationend', () => {
+        upgradeBtn.classList.remove('pop');
+      }, { once: true });
     }
   });
 
@@ -47,7 +61,29 @@ window.addEventListener('DOMContentLoaded', () => {
       passiveCount += 1;
       updateScore();
       updateCosts();
+
+      // Button pop animation
+      buySystemBtn.classList.add('pop');
+      buySystemBtn.addEventListener('animationend', () => {
+        buySystemBtn.classList.remove('pop');
+      }, { once: true });
     }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    score = 0;
+    clickPower = 1;
+    passiveCount = 0;
+    seconds = 0;
+    updateScore();
+    updateCosts();
+    timerEl.textContent = 'Time: 00:00';
+
+    // Button pop animation
+    resetBtn.classList.add('pop');
+    resetBtn.addEventListener('animationend', () => {
+      resetBtn.classList.remove('pop');
+    }, { once: true });
   });
 
   // passive income per second
@@ -70,4 +106,5 @@ window.addEventListener('DOMContentLoaded', () => {
   updateCosts();
   updateScore();
 });
+
 
