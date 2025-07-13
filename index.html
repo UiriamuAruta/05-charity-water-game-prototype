@@ -4,12 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Charity: Water Clicker Prototype</title>
+  <!-- Branded Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container">
     <h1>Charity: Water Clicker</h1>
     <div id="score">Water Units: 0</div>
+
+    <!-- Milestone Banner -->
+    <div id="milestone-banner" class="hidden"></div>
 
     <!-- Difficulty Toggle -->
     <div class="controls">
@@ -20,6 +25,9 @@
       </select>
     </div>
 
+    <!-- Water Drop Area -->
+    <div id="drop-area"></div>
+
     <button id="click-button">Collect Water</button>
     <div>
       <button id="upgrade-clicker">Upgrade Clicker (Cost: 10)</button>
@@ -29,8 +37,12 @@
     <div id="timer">Time: 00:00</div>
   </div>
 
+  <!-- Footer with charity: water Links -->
+  <footer>
+    <p>Powered by <a href="https://www.charitywater.org" target="_blank" rel="noopener">charity: water</a></p>
+    <p><a href="https://www.charitywater.org/donate" target="_blank" rel="noopener">Donate Now</a></p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
-
-

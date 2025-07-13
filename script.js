@@ -13,10 +13,33 @@ window.addEventListener('DOMContentLoaded', () => {
   const resetBtn = document.getElementById('reset-button');
   const timerEl = document.getElementById('timer');
   const difficultyEl = document.getElementById('difficulty');
+  const dropArea = document.getElementById('drop-area');
+  const milestoneBanner = document.getElementById('milestone-banner');
 
-  // Helper to format score with decimals only when needed
+  // Milestones at powers of ten (1,10,100,...)
+  const milestoneScores = [1,10,100,1000,10000];
+
+  // Format score utility
   function formatScore(val) {
     return val % 1 === 0 ? val : val.toFixed(1);
+  }
+
+  function showMilestone(msg) {
+    milestoneBanner.textContent = msg;
+    milestoneBanner.classList.remove('hidden');
+    milestoneBanner.classList.add('slide-in');
+    setTimeout(() => {
+      milestoneBanner.classList.remove('slide-in');
+      milestoneBanner.classList.add('hidden');
+    }, 2000);
+  }
+
+  function checkMilestone() {
+    // Round down to nearest integer
+    const intScore = Math.floor(score);
+    if (milestoneScores.includes(intScore)) {
+      showMilestone(`Milestone reached: ${intScore} Water Units!`);
+    }
   }
 
   function updateScore() {
@@ -25,6 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
     scoreEl.addEventListener('animationend', () => {
       scoreEl.classList.remove('pulse');
     }, { once: true });
+    checkMilestone();
   }
 
   function updateCosts() {
@@ -32,10 +56,21 @@ window.addEventListener('DOMContentLoaded', () => {
     buySystemBtn.textContent = `Buy Water System (Cost: ${50 * (passiveCount + 1)})`;
   }
 
+  function spawnDrop() {
+    const drop = document.createElement('div');
+    drop.className = 'drop';
+    dropArea.appendChild(drop);
+    drop.addEventListener('click', () => {
+      const factor = difficultyEl.value === 'hard' ? 0.1 : 1;
+      score += clickPower * factor;
+      updateScore();
+      drop.remove();
+    });
+    setTimeout(() => drop.remove(), 5000);
+  }
+
   clickBtn.addEventListener('click', () => {
-    const factor = difficultyEl.value === 'hard' ? 0.1 : 1;
-    score += clickPower * factor;
-    updateScore();
+    spawnDrop();
     clickBtn.classList.add('pop');
     clickBtn.addEventListener('animationend', () => {
       clickBtn.classList.remove('pop');
@@ -75,6 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
     clickPower = 1;
     passiveCount = 0;
     seconds = 0;
+    dropArea.innerHTML = '';
     updateScore();
     updateCosts();
     timerEl.textContent = 'Time: 00:00';
