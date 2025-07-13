@@ -12,10 +12,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const buySystemBtn = document.getElementById('buy-system');
   const resetBtn = document.getElementById('reset-button');
   const timerEl = document.getElementById('timer');
+  const difficultyEl = document.getElementById('difficulty');
+
+  // Helper to format score with decimals only when needed
+  function formatScore(val) {
+    return val % 1 === 0 ? val : val.toFixed(1);
+  }
 
   function updateScore() {
-    scoreEl.textContent = `Water Units: ${score}`;
-    // Score pulse animation
+    scoreEl.textContent = `Water Units: ${formatScore(score)}`;
     scoreEl.classList.add('pulse');
     scoreEl.addEventListener('animationend', () => {
       scoreEl.classList.remove('pulse');
@@ -28,10 +33,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   clickBtn.addEventListener('click', () => {
-    score += clickPower;
+    const factor = difficultyEl.value === 'hard' ? 0.1 : 1;
+    score += clickPower * factor;
     updateScore();
-
-    // Button pop animation
     clickBtn.classList.add('pop');
     clickBtn.addEventListener('animationend', () => {
       clickBtn.classList.remove('pop');
@@ -45,8 +49,6 @@ window.addEventListener('DOMContentLoaded', () => {
       clickPower += 1;
       updateScore();
       updateCosts();
-
-      // Button pop animation
       upgradeBtn.classList.add('pop');
       upgradeBtn.addEventListener('animationend', () => {
         upgradeBtn.classList.remove('pop');
@@ -61,8 +63,6 @@ window.addEventListener('DOMContentLoaded', () => {
       passiveCount += 1;
       updateScore();
       updateCosts();
-
-      // Button pop animation
       buySystemBtn.classList.add('pop');
       buySystemBtn.addEventListener('animationend', () => {
         buySystemBtn.classList.remove('pop');
@@ -78,8 +78,6 @@ window.addEventListener('DOMContentLoaded', () => {
     updateScore();
     updateCosts();
     timerEl.textContent = 'Time: 00:00';
-
-    // Button pop animation
     resetBtn.classList.add('pop');
     resetBtn.addEventListener('animationend', () => {
       resetBtn.classList.remove('pop');
@@ -88,8 +86,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // passive income per second
   setInterval(() => {
+    const factor = difficultyEl.value === 'hard' ? 0.1 : 1;
     if (passiveCount > 0) {
-      score += passiveCount;
+      score += passiveCount * factor;
       updateScore();
     }
   }, 1000);
@@ -106,5 +105,3 @@ window.addEventListener('DOMContentLoaded', () => {
   updateCosts();
   updateScore();
 });
-
-
